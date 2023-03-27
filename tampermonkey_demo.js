@@ -1,11 +1,15 @@
 // ==UserScript==
 // @name         Demo
-// @namespace    http://tampermonkey.net/
-// @version      0.2
+// @namespace    https://github.com/xt9852/tampermonkey_demo
+// @version      0.1
 // @description  demo
 // @author       xt
-// @match        https://*/*
+// @match        https://pan.baidu.com/s/*
+// @match        https://yun.baidu.com/s/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+// @require      https://unpkg.com/jquery@3.6.0/dist/jquery.min.js
+// @require      https://unpkg.com/sweetalert2@10.16.6/dist/sweetalert2.all.min.js
+// @require      https://cdn.jsdelivr.net/npm/hls.js@latest
 // @grant        GM_registerMenuCommand
 // ==/UserScript==
 
@@ -105,22 +109,123 @@ GM_xmlhttpRequest({
                                                     // setParent :true:新标签页面关闭后，焦点重新回到源页面
 */
 
-GM_registerMenuCommand("Demo菜单1", function(){console.log("name1");}, "b");
-GM_registerMenuCommand("Demo菜单2", function(){console.log("name2");}, "c");
+// 设置油猴菜单
+GM_registerMenuCommand("菜单1", function(){console.log("Demo菜单1");}, "b");
+GM_registerMenuCommand("菜单2", function(){console.log("Demo菜单2");}, "c");
 
-(function() {
-    'use strict';
+// 得到函数名称
+function FUNCNAME(num) {
+  let tmp = arguments.callee.caller.toString();
+  console.log(/function (\w+)/.exec(tmp)[1]);
+}
 
-    console.log("Hello World");
+// 对话框
+let sa = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 3500,
+    timerProgressBar: false,
+    didOpen: (sa) => {
+        sa.addEventListener('mouseenter', Swal.stopTimer);
+        sa.addEventListener('mouseleave', Swal.resumeTimer);
+    }
+});
 
-    let main = {
-        init() {
+// 信息框
+let message = {
+    success: (text) => {
+        sa.fire({title: text, icon: 'success'});
+    },
+    error: (text) => {
+        sa.fire({title: text, icon: 'error'});
+    },
+    warning: (text) => {
+        sa.fire({title: text, icon: 'warning'});
+    },
+    info: (text) => {
+        sa.fire({title: text, icon: 'info'});
+    },
+    question: (text) => {
+        sa.fire({title: text, icon: 'question'});
+    }
+};
 
-            if (/(pan|yun).baidu.com/.test(location.host)) {
-                console.log("baidu.com");
-            }
+var hls = new Hls();
+
+// 播放视频
+function video_onclick() {
+     this.controls = true;
+     this.style.cursor = "default";
+     hls.loadSource(this.id);
+     hls.attachMedia(this);
+     hls.on(Hls.Events.MANIFEST_PARSED,function() {
+     this.play();
+     });
+}
+
+// 添加按钮
+function addButton() {
+    FUNCNAME();
+
+    let dwn = document.querySelectorAll("a[data-button-id]");
+
+    for (let i = 0; i < dwn.length; i++) {
+        if (dwn[i].getAttribute("data-button-id") == "b3") { // b3下载按钮
+            dwn = dwn[i];
+            break;
         }
-    };
+    }
 
-    main.init();
-})();
+    console.log("dwn ok");
+
+    let btn = dwn.cloneNode(true);
+
+    btn.firstChild.childNodes[1].innerText = "直接下载";
+
+    console.log("btn ok");
+
+    dwn.parentNode.insertBefore(btn, dwn);
+
+    console.log("append ok");
+
+    let video = document.createElement("video");
+    video.poster = "https://pannss.bdstatic.com/m-static/disk-theme/theme/white/img/logo.png";
+    video.id = "https://yunqivedio.alicdn.com/2017yq/v2/0x0/96d79d3f5400514a6883869399708e11/96d79d3f5400514a6883869399708e11.m3u8";
+    video.width = "215";
+    video.height = "206";
+    video.style.cursor= "pointer";
+    video.onclick = video_onclick;
+
+    console.log("video ok");
+
+    let div = document.querySelector("div.bd-aside");
+
+    while (div.childNodes.length > 0) {
+        div.removeChild(div.childNodes[0]);
+    }
+
+    div.appendChild(video);
+    div.style.background = "red";
+
+    console.log("video pos ok");
+}
+
+// 初始化
+function init() {
+    FUNCNAME();
+
+    addButton();
+}
+
+// 主函数
+function main() {
+    FUNCNAME();
+    init();
+}
+
+console.log("--开始--");
+main();
+console.log("--结束--");
+
+
