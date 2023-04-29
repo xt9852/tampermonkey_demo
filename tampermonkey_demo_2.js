@@ -4,9 +4,10 @@
 // @version      0.1
 // @description  demo
 // @author       xt
-// @match        https://88av851.cc/app/user/info*
+// @match        https://88av931.cc/app/user/info*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @require      https://cdn.jsdelivr.net/npm/hls.js@latest
+// @connect      https://v88avnetwork.github.io/88av.html
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
