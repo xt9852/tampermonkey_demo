@@ -85,7 +85,7 @@ function main() {
     dns = document.getElementsByTagName('a')[0].href;
 
     let ret;
-    let reg = /\?type=(video\/latest|jav|oumei|categories\/91|search\/.+?)&page=(\d*)/g;
+    let reg = /\?type=(.+?)&page=(\d*)/g;
     let url = dns;
 
     if ((ret = reg.exec(window.location.search)) !== null) {
@@ -101,11 +101,11 @@ function main() {
 
     document.body = document.createElement("body");
 
+    link('91', '?type=categories/91&page=1');
+    link('ca', '?type=search/ca&page=');
     link('jav', '?type=jav&page=1');
-    link('oumei', '?type=oumei&page=1');
-    link('latest', '?type=video/latest&page=1');
-    link('search/ca', '?type=search/ca&page=');
-    link('categories', '?type=categories&page=1');
+    link('usa', '?type=oumei&page=1');
+    link('new', '?type=video/latest&page=1');
 
     console.log("--添加连接结束--\n\n\n");
 
