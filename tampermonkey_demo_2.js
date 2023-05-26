@@ -7,7 +7,7 @@
 // @match        https://v88avnetwork.github.io/88av.html*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @require      https://cdn.jsdelivr.net/npm/hls.js@latest
-// @connect      88av1044.cc
+// @connect      88av1090.cc
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
@@ -60,10 +60,10 @@ function make(html) {
     let ret;
     let reg = /<img alt="([^"]+)"[\s\S]+?\/\/([^\/]+)\/videos\/([^\/]+)\//g;
 
-    while ((ret = reg.exec(html)) !== null) {
+    for (var i = 1; (ret = reg.exec(html)) !== null; i++) {
 
         div = document.createElement("div");
-        div.innerText = ret[1];
+        div.innerText = i + ':' +ret[1];
         document.body.appendChild(div);
 
         img = document.createElement("video");
